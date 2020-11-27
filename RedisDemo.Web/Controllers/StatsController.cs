@@ -32,12 +32,11 @@ namespace RedisDemo.Web.Controllers
 
         private async Task<IEnumerable<string>> GetStats()
         {
-            string cacheKey = "redis/demo/values";
+            string cacheKey = $"redis/demo/values{DateTime.UtcNow:yyyyMMdd_HHmm}";
 
-            var encodedBytes = await _cache.GetAsync(cacheKey);
-            if (encodedBytes != null)
+            var stringValue = await _cache.GetStringAsync(cacheKey);
+            if (stringValue != null)
             {
-                var stringValue = Encoding.UTF8.GetString(encodedBytes);
                 return JsonConvert.DeserializeObject<string[]>(stringValue);
             }
 
