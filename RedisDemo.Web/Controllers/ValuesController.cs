@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace RedisDemo.Web.Controllers
 {
@@ -10,36 +7,47 @@ namespace RedisDemo.Web.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private static readonly List<string> _values = new List<string>
+        {
+             "value1", "value2"
+        };
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _values.ToArray();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return "value";
+            return $"value {id}";
         }
 
         // POST api/values
         [HttpPost]
         public void Post([FromBody] string value)
         {
+            _values.Add(value);
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+            _values.Add($"{value} - {id}");
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            if(_values.Count <= id && id >= 0)
+            {
+                _values.RemoveAt(id);
+            }
         }
     }
 }
