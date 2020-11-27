@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using RedisDemo.Web.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,7 +8,7 @@ namespace RedisDemo.Web.Data
 {
     public interface IDashboardDataService
     {
-        Task<IEnumerable<string>> GetStatsAsync();
+        Task<SummaryToday> GetStatsAsync();
     }
 
     public class DashboardDataService : IDashboardDataService
@@ -21,11 +20,11 @@ namespace RedisDemo.Web.Data
             _cache = cache;
         }
 
-        public async Task<IEnumerable<string>> GetStatsAsync()
+        public async Task<SummaryToday> GetStatsAsync()
         {
-            string cacheKey = $"redis/demo/values{DateTime.UtcNow:yyyyMMdd_HHmm}";
+            string cacheKey = $"daily_stats_{DateTime.UtcNow:yyyyMMdd_HHmm}";
 
-            var result = await _cache.GetValue<IEnumerable<string>>(cacheKey);
+            var result = await _cache.GetValue<SummaryToday>(cacheKey);
             if (result != null)
             {
                 return result;
@@ -38,15 +37,17 @@ namespace RedisDemo.Web.Data
             return stats;
         }
 
-        private static IEnumerable<string> GetStatsFromDatabase()
+        private static SummaryToday GetStatsFromDatabase()
         {
             Thread.Sleep(1000);
 
-            return new[]
+            var random = new Random();
+
+            return new SummaryToday
             {
-                "stat 1",
-                "stat 2",
-                "stat 3",
+                Sales = random.Next(10000),
+                UserLogins = random.Next(10000),
+                LastUpdated = DateTime.UtcNow
             };
         }
     }

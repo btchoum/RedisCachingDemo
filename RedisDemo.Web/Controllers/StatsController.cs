@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using RedisDemo.Web.Data;
 
@@ -18,7 +17,7 @@ namespace RedisDemo.Web.Controllers
 
         // GET api/stats
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<string>>> GetAsync()
+        public async Task<ActionResult<SummaryToday>> GetAsync()
         {
             var result = await _service.GetStatsAsync();
 

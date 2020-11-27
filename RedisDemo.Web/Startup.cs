@@ -24,7 +24,7 @@ namespace RedisDemo.Web
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = "localhost";
-                options.InstanceName = "SampleInstance";
+                options.InstanceName = "redis_demo_";
             });
 
             services.AddTransient<IDashboardDataService, DashboardDataService>();
