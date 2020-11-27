@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RedisDemo.Web.Data;
 
 namespace RedisDemo.Web
 {
@@ -25,6 +26,8 @@ namespace RedisDemo.Web
                 options.Configuration = "localhost";
                 options.InstanceName = "SampleInstance";
             });
+
+            services.AddTransient<IDashboardDataService, DashboardDataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

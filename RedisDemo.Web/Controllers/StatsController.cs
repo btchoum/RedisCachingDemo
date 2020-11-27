@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
-using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using RedisDemo.Web.Infrastructure;
+using RedisDemo.Web.Data;
 
 namespace RedisDemo.Web.Controllers
 {
@@ -12,49 +9,20 @@ namespace RedisDemo.Web.Controllers
     [ApiController]
     public class StatsController : ControllerBase
     {
-        private readonly IDistributedCache _cache;
+        private readonly IDashboardDataService _service;
 
-        public StatsController(IDistributedCache cache)
+        public StatsController(IDashboardDataService dataService)
         {
-            _cache = cache;
+            _service = dataService;
         }
 
         // GET api/stats
         [HttpGet]
         public async Task<ActionResult<IEnumerable<string>>> GetAsync()
         {
-            var result = await GetStats();
+            var result = await _service.GetStatsAsync();
 
             return Ok(result);
-        }
-
-        private async Task<IEnumerable<string>> GetStats()
-        {
-            string cacheKey = $"redis/demo/values{DateTime.UtcNow:yyyyMMdd_HHmm}";
-
-            var result = await _cache.GetValue<IEnumerable<string>>(cacheKey);
-            if (result != null)
-            {
-                return result;
-            }
-
-            var stats = GetStatsFromDatabase();
-
-            await _cache.SetItem(cacheKey, stats, TimeSpan.FromSeconds(60));
-
-            return stats;
-        }
-
-        private static IEnumerable<string> GetStatsFromDatabase()
-        {
-            Thread.Sleep(1000);
-
-            return new[]
-            {
-                "stat 1",
-                "stat 2",
-                "stat 3",
-            };
         }
     }
 }
