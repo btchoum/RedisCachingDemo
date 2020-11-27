@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using RedisDemo.Web.Infrastructure;
 
 namespace RedisDemo.Web.Controllers
 {
@@ -34,19 +32,15 @@ namespace RedisDemo.Web.Controllers
         {
             string cacheKey = $"redis/demo/values{DateTime.UtcNow:yyyyMMdd_HHmm}";
 
-            var stringValue = await _cache.GetStringAsync(cacheKey);
-            if (stringValue != null)
+            var result = await _cache.GetValue<IEnumerable<string>>(cacheKey);
+            if (result != null)
             {
-                return JsonConvert.DeserializeObject<string[]>(stringValue);
+                return result;
             }
 
             var stats = GetStatsFromDatabase();
 
-            var jsonString = JsonConvert.SerializeObject(stats);
-            var options = new DistributedCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromSeconds(60));
-
-            await _cache.SetStringAsync(cacheKey, jsonString, options);
+            await _cache.SetItem(cacheKey, stats, TimeSpan.FromSeconds(60));
 
             return stats;
         }
