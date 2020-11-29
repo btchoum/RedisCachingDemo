@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using RedisDemo.Web.Data;
+using RedisDemo.SharedLibrary.Data;
 
 namespace RedisDemo.Web.Controllers
 {

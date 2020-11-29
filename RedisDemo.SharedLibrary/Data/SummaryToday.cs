@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RedisDemo.Web.Data
+namespace RedisDemo.SharedLibrary.Data
 {
     public class SummaryToday
     {

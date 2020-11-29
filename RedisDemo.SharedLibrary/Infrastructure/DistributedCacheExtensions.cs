@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
-namespace RedisDemo.Web.Infrastructure
+namespace RedisDemo.SharedLibrary.Infrastructure
 {
     public static class DistributedCacheExtensions
     {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using RedisDemo.Web.Infrastructure;
+using RedisDemo.SharedLibrary.Infrastructure;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RedisDemo.Web.Data
+namespace RedisDemo.SharedLibrary.Data
 {
     public interface IDashboardDataService
     {

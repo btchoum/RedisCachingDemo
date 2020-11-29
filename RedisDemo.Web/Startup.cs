@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RedisDemo.Web.Data;
+using RedisDemo.SharedLibrary.Data;
 
 namespace RedisDemo.Web
 {
